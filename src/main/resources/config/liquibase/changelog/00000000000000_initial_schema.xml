@@ -1,0 +1,84 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <!-- Create User table -->
+    <changeSet id="createUserTable" author="jahongir">
+        <createTable tableName="users">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="created_by" type="UUID"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="enable" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create user_authorities table for ElementCollection -->
+    <changeSet id="createUserAuthoritiesTable" author="jahongir">
+        <createTable tableName="users_authorities">
+            <column name="user_id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="authority" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Add foreign key constraint from user_authorities table to User table -->
+    <changeSet id="addForeignKeyToUserAuthoritiesTable" author="jahongir">
+        <addForeignKeyConstraint baseTableName="users_authorities" baseColumnNames="user_id"
+                                 referencedTableName="users" referencedColumnNames="id"
+                                 constraintName="fk_user_authorities_user"/>
+    </changeSet>
+
+    <!-- Create Category table -->
+    <changeSet id="createCategoryTable" author="jahongir">
+        <createTable tableName="category">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="created_by" type="UUID"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Create Product table -->
+    <changeSet id="createProductTable" author="jahongir">
+        <createTable tableName="product">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_at" type="TIMESTAMP"/>
+            <column name="created_by" type="UUID"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="quantity" type="DOUBLE"/>
+            <column name="measure_type" type="VARCHAR(255)"/>
+            <column name="expire_date" type="DATE"/>
+            <column name="category_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <!-- Add foreign key constraint from Product table to Category table -->
+    <changeSet id="addForeignKeyToProductTable" author="jahongir">
+        <addForeignKeyConstraint baseTableName="product" baseColumnNames="category_id"
+                                 referencedTableName="category" referencedColumnNames="id"
+                                 constraintName="fk_product_category"/>
+    </changeSet>
+</databaseChangeLog>

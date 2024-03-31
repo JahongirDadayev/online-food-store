@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  #  Postgresql container
+  postgres:
+    image: postgres:latest
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root1234
+      POSTGRES_DB: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - store-bridge
+
+  # Redis Container
+  redis:
+    image: redis:latest
+    command: redis-server
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - store-bridge
+
+  # OnlineFoodStore Container
+  backend:
+    build: .
+    container_name: online-food-store
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DB_HOST: postgresql
+      DB_PORT: 5432
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
+    networks:
+      - store-bridge
+
+networks:
+  store-bridge:
+    driver: bridge
+
+
+
