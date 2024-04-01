@@ -19,13 +19,15 @@ public class InitialDataLoader {
 
     @Bean
     public void init() {
-        userRepository.save(User.builder()
-                .username("dadayevjahongir82@gmail.com")
-                .firstName("Jahongir")
-                .lastName("Dadayev")
-                .password(passwordEncoder.encode("Jahongir1234"))
-                .authorities(Collections.singleton(EAuthority.USER))
-                .enabled(true)
-                .build());
+        if (!userRepository.existsByUsername("dadayevjahongir82@gmail.com")) {
+            userRepository.save(User.builder()
+                    .username("dadayevjahongir82@gmail.com")
+                    .firstName("Jahongir")
+                    .lastName("Dadayev")
+                    .password(passwordEncoder.encode("Jahongir1234"))
+                    .authorities(Collections.singleton(EAuthority.USER))
+                    .enabled(true)
+                    .build());
+        }
     }
 }

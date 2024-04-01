@@ -3,6 +3,7 @@ package com.example.onlinefoodstore.controller;
 import com.example.onlinefoodstore.model.dto.AuthDTO;
 import com.example.onlinefoodstore.model.dto.Header;
 import com.example.onlinefoodstore.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(path = "/sign-in")
-    public Header<?> signIn(@RequestBody AuthDTO authDTO){
+    public Header<?> signIn(@RequestBody @Valid AuthDTO authDTO) {
         return Header.ok(authService.signIn(authDTO));
     }
 }

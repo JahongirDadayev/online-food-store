@@ -7,6 +7,7 @@ import com.example.onlinefoodstore.model.dto.UserDTO;
 import com.example.onlinefoodstore.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/add/new-user")
-    public Header<?> addNewUser(@RequestBody UserDTO userDTO) throws MessagingException, IOException {
+    public Header<?> addNewUser(@RequestBody @Valid UserDTO userDTO) throws MessagingException, IOException {
         userService.addNewUser(userDTO);
         return Header.ok();
     }

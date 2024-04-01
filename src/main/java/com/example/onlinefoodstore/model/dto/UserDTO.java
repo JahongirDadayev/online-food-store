@@ -1,6 +1,7 @@
 package com.example.onlinefoodstore.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ public class UserDTO extends BaseDTO<UUID> implements Serializable {
     @JsonProperty(value = "lastName")
     private String lastName;
 
+    @Email(message = "Email isn't correct!")
     @JsonProperty(value = "username")
     private String username;
 }
